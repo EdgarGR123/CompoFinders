@@ -26,9 +26,8 @@ Table of contents
 --------------------------------------------- */
 
 
-
-
 /* Typography */
+
 body, ul, li, p, a, label, input, div {
   background-color: rgb(0, 0, 0) ;
   font-family: 'Roboto', sans-serif;
@@ -148,7 +147,7 @@ body, ul, li, p, a, label, input, div {
   line-height: 2.6em;
 }
 #tempaltemo_footer ul.footer-icons li:hover {
-  background-color: #cfd6e1;
+  background-color: #000000;
   transition: .5s;
 }
 #tempaltemo_footer ul.footer-icons li:hover i {
