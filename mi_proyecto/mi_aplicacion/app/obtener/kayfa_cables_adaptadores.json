@@ -1,8 +1,7 @@
 [
     {
-        "sitio": "zona digital",
-        "url":"https://kayfa-store.com/",
-        "url_uno":"https://kayfa-store.com/product/family/portatiles",
+        "sitio": "kayfa",
+        "url":"https://kayfa-store.com/product/family/cables-y-adaptadores",
         "url_base":"https://kayfa-store.com/",
         "name":"Aeon",
         "type_scraper":null,
@@ -17,12 +16,12 @@
             "abbreviation":"USD"
         },
         "links_productos":".product-item .item-inner .item-info .item-title a",
-
+        
         "fields":
         [
             {
                 "field_name":"Title",
-                "class_title_product":"product-name",
+                "class_title_product":".product-view-area .product-name h1",
                 "xpath_title_product":"/html/body/div[3]/div[2]/div/div[2]/div[1]/div/div[2]/div[1]",
                 "field_tag":"h1"
             },
@@ -49,9 +48,10 @@
 
         "pagination":{
             "number":"1",
+            "parameter":"?page=",
             "xpath_links_page1":"/html/body/div[1]/main/div/div[2]/div[1]/div[2]/div/div[1]/div[3]/ul",
             "xpath_links_page2":"/html/body/div[1]/main/div/div[2]/div[2]/ul",
-            "total":30
+            "total":10
         }
     }
 ]

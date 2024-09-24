@@ -19,6 +19,8 @@ from django.urls import path
 from mi_aplicacion import views
 
 urlpatterns = [
+    path('home/', views.home, name='home'),
     path('admin/', admin.site.urls),
-    path('', views.home, name='home')
+    path('home/scraper/', views.activar_scraper, name='activar_scraper')
 ]
+

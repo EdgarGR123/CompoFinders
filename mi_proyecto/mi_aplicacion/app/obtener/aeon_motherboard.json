@@ -1,7 +1,6 @@
 [
     {   "sitio":"aeon",
-        "url":"https://aeon.com.sv/shop",
-        "url_uno":"https://aeon.com.sv/shop/page/",
+        "url":"https://aeon.com.sv/shop/category/componentes-motherboard-392",
         "url_base":"https://aeon.com.sv/",
         "name":"Aeon",
         "type_scraper":null,
@@ -15,7 +14,7 @@
             "symbol":"$",
             "abbreviation":"USD"
         },
-        "links_productos":"d-block.h-100.asp-img",
+        "links_productos":".as-product .pro-img .asp-img",
         
         "fields":
         [
@@ -49,9 +48,10 @@
 
         "pagination":{
             "number":"1",
+            "parameter" :"/page/",
             "xpath_links_page1":"/html/body/div[1]/main/div/div[2]/div[1]/div[2]/div/div[1]/div[3]/ul",
             "xpath_links_page2":"/html/body/div[1]/main/div/div[2]/div[2]/ul",
-            "total":30
+            "total":1
         }
     }
 ]

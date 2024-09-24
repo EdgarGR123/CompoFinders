@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulario de Componentes de PC</title>
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -41,42 +42,76 @@
 <body>
     <div class="form-container">
         <h1>Scraper</h1>
-        <form action="/submit-form" method="post">
+        <form id="scraper-form" method="post">
+            {% csrf_token %}
 
-
-            <!-- Nombre de la Tienda -->
-            <label for="store-name">Nombre de la Tienda:</label>
-            <select id="store-name" name="store-name" required>
-                <option value="" disabled selected>Selecciona una categoría</option>
-                <option value="procesador">Aeon</option>
-                <option value="placa-base">Kayfa</option>
-                <option value="placa-base">Zona Digital</option>
+            <label for="nombre-tienda">Nombre de la Tienda:</label>
+            <select id="nombre-tienda" name="nombre-tienda" required>
+                <option value="" disabled selected>Selecciona una tienda</option>
+                <option value="aeon">Aeon</option>
+                <option value="kayfa">Kayfa</option>
+                <option value="zona-digital">Zona Digital</option>
             </select>
 
 
-            <!-- Categorías de Componentes -->
-            <label for="component-category">Categoría de Componente:</label>
-            <select id="component-category" name="component_category" required>
+            <label for="componente-categoria">Categoría de Componente:</label>
+            <select id="componente-categoria" name="componente-categoria" required>
                 <option value="" disabled selected>Selecciona una categoría</option>
                 <option value="procesador">Procesador</option>
                 <option value="placa-base">Placa Base</option>
-                <option value="memoria-ram">Memoria RAM</option>
-                <option value="tarjeta-grafica">Tarjeta Gráfica</option>
-                <option value="disco-duro">Disco Duro</option>
-                <option value="fuente-alimentacion">Fuente de Alimentación</option>
-                <option value="gabinete">Gabinete</option>
-                <option value="sistema-cooling">Sistema de Cooling</option>
+
             </select>
             
-            <!-- Botón de Envío -->
-            <button type="submit">Comensar</button>
+            <button type="submit">Comenzar</button>
         </form>
     </div>
+
+    <script>
+        document.getElementById('scraper-form').addEventListener('submit', function(event) {
+            event.preventDefault(); 
+        
+            const formData = new FormData(this);
+            const datos = Object.fromEntries(formData.entries());
+        
+            fetch('http://127.0.0.1:8000/home/scraper/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken') 
+                },
+                body: JSON.stringify(datos) 
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                alert(data.mensaje);
+            })
+            .catch(error => {
+                console.error('Error:', error);});
+        });
+
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    </script>
 </body>
 </html>
-
 
 <script>
 
 
+    
 </script>
+
