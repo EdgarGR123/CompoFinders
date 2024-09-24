@@ -1,0 +1,59 @@
+[
+    {
+        "sitio": "zona digital",
+        "url":"https://kayfa-store.com/",
+        "url_uno":"https://kayfa-store.com/product/family/portatiles",
+        "url_base":"https://kayfa-store.com/",
+        "name":"Aeon",
+        "type_scraper":null,
+        "info_page":{
+            "country":"El salvador",
+            "abbreviation":"SV",
+            "language":"Español"
+        },
+        "currency":{
+            "name":"Dolar estadounidense",
+            "symbol":"$",
+            "abbreviation":"USD"
+        },
+        "links_productos":".product-item .item-inner .item-info .item-title a",
+
+        "fields":
+        [
+            {
+                "field_name":"Title",
+                "class_title_product":"product-name",
+                "xpath_title_product":"/html/body/div[3]/div[2]/div/div[2]/div[1]/div/div[2]/div[1]",
+                "field_tag":"h1"
+            },
+            {
+                "field_price":"Price",
+                "class_price_product":"special-price",
+                "xpath_price_product":"/html/body/div[3]/div[2]/div/div[2]/div[1]/div/div[2]/div[2]/p",
+                "field_tag":"h4"   
+            },{
+                "field_description":"Description",
+                "class_description_product":"std",
+                "xpath_description_product":"/html/body/div[3]/div[2]/div/div[2]/div[2]/div/div/div/div/div/div[1]/div",
+                "field_tag":"div"
+            },{
+                "field_image":"Image",
+                "class_image_product":"magnifier",
+                "xpath_image_product":"/html/body/div[5]/img",
+                "field_tag":"div"
+            },{
+                "class_state_product":"availability in-stock pull-right",
+                "xpath_state_product":"/html/body/div[3]/div[2]/div/div[2]/div[1]/div/div[2]/div[3]/p[2]"
+            }
+
+        ],
+
+        "pagination":{
+            "number":"1",
+            "xpath_links_page1":"/html/body/div[1]/main/div/div[2]/div[1]/div[2]/div/div[1]/div[3]/ul",
+            "xpath_links_page2":"/html/body/div[1]/main/div/div[2]/div[2]/ul",
+            "total":30
+        }
+    }
+]
+

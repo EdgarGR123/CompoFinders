@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "lucky-coast-435115-b1",
+  "private_key_id": "8444455e1291e8a4e706effd8843235b54c925de",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQChh2HDp91xGPGi\nX8zwXSnPLu4bMH2xigNuXbRxwWVskB8D91m2f/VypzJ3hZBM7KhA2i8EOotvCDYd\nYkz/xgy12J/3Q2/bcsY/J3ikmiufwnqOfqPmomSSEG5JEAktETP6rAuxqaG3dYw1\n8cCC/zDf25yccEnOqsdT5gEwqc1mQNwVFSkZrk2iwLd7O1SDlGlz9GjjPiiL2oaC\nshtiorXSpAWBG4ucWfvHJ4r/lKQkhA/LYPL2l0h7y3kVMR36cgWuF81YzGwcovFO\np86sar4fDTBXyFJ57SF8F3wp5+jYSwvFWPffAiAhvQkw05LtIeAV+HPNL1J+WULg\nggq3mqHdAgMBAAECggEADSPRduRarfbYvzv6VKpLeqRnb7RJ4U2oGkwKn/9axBJU\nR5MRS/iMS7OgthraInvU8xOcpAQsMA/TsR+8QklG4usYljl46bnkOSJ5nLBC8LfW\nFu3j4ODgfAZUpmJk0LL3zsI8oEr7kgxAp+m+3pkqTWeUzaAPzP1VAjTxb1c80369\nlQ7PwA80N7E4zRjRkVZeCvy6l1Zf79VDo8bjGWgRrYjtPa2aGG71W87qEtG7AKDN\nzhbygFYHnZjNxkt173uZiMxkFz3jbGicKiVcez6WLPB7FfBOwHwlh5khtpLEkh6o\nuwDeaFJ515oVJmjeTSMsXtaRdm/tImTTWPFW4AB24QKBgQDXT5YbaVfbRmXmvgW3\nXDQloQwT+cYpF5gBj0CRPT+JM3Nfo8OsETEvEP6LsqlBiF05fH6iPAUxto6Wxuzy\nVRMC37vOqzum/e/KK649intlo+9wAGk5zm8Ah68VDEHAaqxSNzo9DrLmeP2SXNvL\nSWNK5rzyTNwpImnXb9oCBjAsvQKBgQDADebUyvRLiuZbs7ti4CSxAGFY4eInd8Fs\nFlcA0oLNd7nAkezi5CXFv3+qMCEv0Br0qT5EU4uALXRT7OWfXKUhKKmGxM6+BdxK\nGA+1nyoi7T/RxqXnIvG4n0ltgSUTmv+rfWedTxvNHvxXAQIzqFTbaVBnUZuhZAEa\nXxvKu4HroQKBgQCpFTziJeXysuQPQianCeeBrWkYvsuZNYgPoXmpFRoyGo9+CdL9\n6zpepc/f0NwONJJRNK0VpmDF24E6ctlcrOaTGTQZZmsgBscqUwcwGPIyrXy4zfnU\nhYKyPduGgeuYuay9m9VGYaaoS1eGexm4GNe62FyFQ0qZmwbXQmVHtahbWQKBgQCk\ny4j1sMzdAWvW5it1lVWGmAfwB6tSKH1NLQIsz3Wzrvcx2UVGD3Sl8UMvmqrvZweq\nRosKgBGkw9wco5sJGqsK/+QvozKvdUHoRis8sj2qyJ9JdsYmxiJaRDvyfa193DNk\nSHAfWKFHaj4mvdPQ1bEysHRwo2MColgb895aIHlD4QKBgH2UA8vEhUsK2OvCyin7\nF2Gsg87FwfzWf0aWS40VLBKeWSAfiuXYyMPaNgbdZD6t6zyveovMiDrh7yS7rmc7\n9Lk1GVnqnVACccPZhpWeF31EKaXZYg7RI4QCswtPE1xV+xD10eW1j4XccuOZxPUo\nnqT73IzT8LoexWQyaI+03bKT\n-----END PRIVATE KEY-----\n",
+  "client_email": "edgarnahum@lucky-coast-435115-b1.iam.gserviceaccount.com",
+  "client_id": "114670017810349017484",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/edgarnahum%40lucky-coast-435115-b1.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

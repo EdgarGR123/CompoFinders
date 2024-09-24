@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Componentes de PC</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .form-container {
+            max-width: 600px;
+            margin: auto;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Scraper</h1>
+        <form action="/submit-form" method="post">
+
+
+            <!-- Nombre de la Tienda -->
+            <label for="store-name">Nombre de la Tienda:</label>
+            <select id="store-name" name="store-name" required>
+                <option value="" disabled selected>Selecciona una categoría</option>
+                <option value="procesador">Aeonr</option>
+                <option value="placa-base">Kayfa</option>
+                <option value="placa-base">Zona Digital</option>
+            </select>
+
+
+            <!-- Categorías de Componentes -->
+            <label for="component-category">Categoría de Componente:</label>
+            <select id="component-category" name="component_category" required>
+                <option value="" disabled selected>Selecciona una categoría</option>
+                <option value="procesador">Procesador</option>
+                <option value="placa-base">Placa Base</option>
+                <option value="memoria-ram">Memoria RAM</option>
+                <option value="tarjeta-grafica">Tarjeta Gráfica</option>
+                <option value="disco-duro">Disco Duro</option>
+                <option value="fuente-alimentacion">Fuente de Alimentación</option>
+                <option value="gabinete">Gabinete</option>
+                <option value="sistema-cooling">Sistema de Cooling</option>
+            </select>
+            
+            <!-- Botón de Envío -->
+            <button type="submit">Comenzar</button>
+        </form>
+    </div>
+</body>
+</html>
+
+
+<script>
+
+
+</script>

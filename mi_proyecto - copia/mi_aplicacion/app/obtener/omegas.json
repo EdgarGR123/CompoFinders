@@ -1,0 +1,59 @@
+[
+    {
+        "sitio": "omega",
+        "url": "https://tienda.omega.com.do/es",
+        "url_uno": "https://tienda.omega.com.do/es/category/list/142?type=grid", 
+        "url_base": "https://tienda.omega.com.do/es/",
+        "name": "Omega Store",
+        "type_scraper": null,
+        "info_page": {
+            "country": "República Dominicana",
+            "abbreviation": "DO",
+            "language": "Español"
+        },
+        "currency": {
+            "name": "Peso Dominicano",
+            "symbol": "RD$",
+            "abbreviation": "DOP"
+        },
+        "links_productos": "product-thumb-info-content",
+        
+        "fields": [
+            {
+                "field_name": "Title",
+                "class_title_product": ".pb-center-column .page-heading",
+                "xpath_title_product": "/html/body/div[1]/div[2]/div/div[2]/div/div[2]/h1",
+                "field_tag": "h1"
+            },
+            {
+                "field_price": "Price",
+                "class_price_product": ".price",
+                "xpath_price_product": "/html/body/div[1]/div[2]/div/div[2]/div/div[2]/div[2]/div[1]/div[1]/span",
+                "field_tag": "span"
+            },
+            {
+                "field_description": "Description",
+                "class_description_product": "#idTab1 .rte",
+                "xpath_description_product": "/html/body/div[1]/div[2]/div/div[2]/div/div[3]/div[1]/div/div",
+                "field_tag": "div"
+            },
+            {
+                "field_image": "Image",
+                "class_image_product": "#bigpic",
+                "xpath_image_product": "/html/body/div[1]/div[2]/div/div[2]/div/div[1]/img",
+                "field_tag": "img"
+            },
+            {
+                "class_state_product": "availability",
+                "xpath_state_product": "/html/body/div[1]/div[2]/div/div[2]/div/div[2]/div[2]/span"
+            }
+        ],
+
+        "pagination": {
+            "number": "1",
+            "xpath_links_page1": "/html/body/div[1]/div[2]/div/div[2]/div/div/div/div[1]/div[2]/div/ul",
+            "xpath_links_page2": "/html/body/div[1]/div[2]/div/div[2]/div[2]/ul",
+            "total": 20
+        }
+    }
+]

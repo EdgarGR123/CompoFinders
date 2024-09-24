@@ -1,0 +1,57 @@
+{
+    "sitio": "intelmax",
+    "url":"https://tiendaintelmax.net/",
+    "url_uno":"https://tiendaintelmax.net/family/116",
+    "url_base":"https://tiendaintelmax.net/",
+    "name":"IntelMax",
+    "type_scraper":null,
+    "info_page":{
+        "country":"El Salvador",
+        "abbreviation":"SV",
+        "language":"Español"
+    },
+    "currency":{
+        "name":"Dolar estadounidense",
+        "symbol":"$",
+        "abbreviation":"USD"
+    },
+    "links_productos":"product-item-link", 
+
+    "fields":[
+        {
+            "field_name":"Title",
+            "class_title_product":".product_title.entry-title",
+            "xpath_title_product":"//h1[@class='product_title entry-title']",
+            "field_tag":"h1"
+        },
+        {
+            "field_price":"Price",
+            "class_price_product":"woocommerce-Price-amount amount",
+            "xpath_price_product":"//p[@class='price']/span",
+            "field_tag":"span"  
+        },
+        {
+            "field_description":"Description",
+            "class_description_product":"woocommerce-Tabs-panel--description",
+            "xpath_description_product":"//div[@id='tab-description']",
+            "field_tag":"div"
+        },
+        {
+            "field_image":"Image",
+            "class_image_product":"wp-post-image",
+            "xpath_image_product":"//img[@class='wp-post-image']",
+            "field_tag":"img"
+        },
+        {
+            "class_state_product":"stock in-stock",
+            "xpath_state_product":"//p[@class='stock in-stock']"
+        }
+    ],
+
+    "pagination":{
+        "number":"1",
+        "xpath_links_page1":"//ul[@class='page-numbers']",  
+        "xpath_links_page2":"//div[@class='pagination']",
+        "total":30
+    }
+}
