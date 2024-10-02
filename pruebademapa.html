@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa de Rutas a Tiendas de Componentes</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #e0f7fa;
+            color: #004d40;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+            color: #00796b;
+        }
+        #map {
+            height: 600px;
+            width: 80%;
+            border: 2px solid #00796b;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .controls {
+            margin-bottom: 10px;
+        }
+        select, button {
+            padding: 10px;
+            margin-right: 10px;
+        }
+        #wazeLink {
+            display: none;
+            margin-top: 10px;
+            padding: 10px 15px;
+            background-color: #ff6f20;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        #wazeLink:hover {
+            background-color: #e65c00; /* Color más oscuro al pasar el ratón */
+        }
+    </style>
+</head>
+<body>
+
+<h1>Encuentra la Ruta a Tiendas de Componentes</h1>
+<div class="controls">
+    <select id="storeSelect">
+        <option value="" disabled selected>Selecciona una tienda</option>
+        <option value="0">Kayfa Plaza</option>
+        <option value="1">Kayfa Multicentro</option>
+        <option value="2">Aeon Las Cascadas</option>
+        <option value="3">Aeon Plaza Mundo</option>
+        <option value="4">Zona Digital</option>
+        <option value="5">Zona Digital Santa Elena</option>
+        <option value="6">Intelmax COOPEFA</option>
+        <option value="7">Omega Plaza Merliot</option>
+        <option value="8">Omega Plaza Mundo</option>
+    </select>
+    <button id="getRoute">Obtener Ruta</button>
+    <a id="wazeLink" target="_blank">Abrir en Waze</a>
+</div>
+<div id="map"></div>
+
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
+<script>
+    const stores = [
+        { name: 'Kayfa Plaza', location: [13.688117, -89.192856] },  // Plaza
+        { name: 'Kayfa Multicentro', location: [13.669913, -89.224902] },  // Multicentro
+        { name: 'Aeon Las Cascadas', location: [13.694633, -89.260129] },  // Las Cascadas
+        { name: 'Aeon Plaza Mundo', location: [13.685710, -89.238173] },  // Plaza Mundo
+        { name: 'Zona Digital', location: [13.687362, -89.206691] },  // Zona Digital
+        { name: 'Zona Digital Santa Elena', location: [13.686148, -89.253035] },  // Santa Elena
+        { name: 'Intelmax COOPEFA', location: [13.693090, -89.221340] },  // COOPEFA
+        { name: 'Omega Plaza Merliot', location: [13.684694, -89.259903] },  // Plaza Merliot
+        { name: 'Omega Plaza Mundo', location: [13.685112, -89.234093] }  // Plaza Mundo
+    ];
+
+    let map, routingControl;
+
+    function initMap() {
+        map = L.map('map').setView([13.692940, -89.218191], 12);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Intentar obtener la ubicación del usuario
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(position => {
+                const userLocation = [position.coords.latitude, position.coords.longitude];
+                L.marker(userLocation).addTo(map).bindPopup('Tu ubicación').openPopup();
+                map.setView(userLocation, 13);
+            }, () => {
+                alert('No se pudo obtener la ubicación del usuario.');
+            });
+        } else {
+            alert('La geolocalización no es soportada por tu navegador.');
+        }
+
+        // Evento para el botón de obtener ruta
+        document.getElementById('getRoute').addEventListener('click', function() {
+            const storeIndex = document.getElementById('storeSelect').value;
+            if (storeIndex) {
+                const storeLocation = stores[storeIndex].location;
+                calculateRoute(storeLocation, stores[storeIndex].name);
+            } else {
+                alert('Por favor, selecciona una tienda.');
+            }
+        });
+    }
+
+    function calculateRoute(storeLocation, storeName) {
+        if (routingControl) {
+            map.removeControl(routingControl);
+        }
+
+        // Obtener la ubicación del usuario
+        navigator.geolocation.getCurrentPosition(position => {
+            const userLocation = [position.coords.latitude, position.coords.longitude];
+
+            // Añadir el marcador de la tienda seleccionada
+            const storeMarker = L.marker(storeLocation).addTo(map)
+                .bindPopup('Tienda seleccionada').openPopup();
+            
+            routingControl = L.Routing.control({
+                waypoints: [
+                    L.latLng(userLocation),
+                    L.latLng(storeLocation)
+                ],
+                routeWhileDragging: true,
+                createMarker: function() { return null; },
+                lineOptions: {
+                    styles: [{ color: '#3388ff', opacity: 0.7, weight: 5 }]
+                }
+            }).addTo(map);
+
+            // Personalizar el contenido en español
+            routingControl.on('routesfound', function(e) {
+                const routes = e.routes;
+                const totalDistance = routes[0].summary.totalDistance / 1000; // Convertir a kilómetros
+                const totalTime = routes[0].summary.totalTime / 60; // Convertir a minutos
+
+                // Generar un cuadro de texto con las indicaciones en español
+                let instructions = "Instrucciones para llegar a " + storeName + ":\n\n";
+                routes[0].instructions.forEach((step, index) => {
+                    instructions += `${index + 1}. ${step.instructions}\n`;
+                });
+
+                alert(`Distancia total: ${totalDistance.toFixed(2)} km\nTiempo estimado: ${totalTime.toFixed(0)} minutos\n\n${instructions}`);
+
+                // Mostrar enlace a Waze
+                const wazeLink = document.getElementById('wazeLink');
+                const wazeUrl = `https://waze.com/ul?ll=${storeLocation[0]},${storeLocation[1]}&navigate=yes`;
+                wazeLink.href = wazeUrl;
+                wazeLink.textContent = `Abrir en Waze para ${storeName}`;
+                wazeLink.style.display = 'inline'; // Mostrar el enlace
+            });
+        }, () => {
+            alert('No se pudo obtener la ubicación del usuario.');
+        });
+    }
+
+    // Inicializar el mapa al cargar la página
+    window.onload = initMap;
+</script>
+
+</body>
+</html>
+
+
+
