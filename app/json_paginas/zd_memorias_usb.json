@@ -1,0 +1,57 @@
+[
+    {
+        "sitio": "zona-digital",
+        "url":"https://www.zonadigitalsv.com/product/family/memorias-usb",
+        "url_base":"https://www.zonadigitalsv.com/",
+        "name":"Zona digital",
+        "type_scraper":null,
+        "info_page":{
+            "country":"El salvador",
+            "abbreviation":"SV",
+            "language":"Español"
+        },
+        "currency":{
+            "name":"Dolar estadounidense",
+            "symbol":"$",
+            "abbreviation":"USD"
+        },
+        "links_productos":".product-thumb .product-thumb-link",
+
+        "fields":
+        [
+            {
+                "field_name":"Title",
+                "class_title_product":"page-title",
+                "xpath_title_product":"/html/body/div[6]/div/h1",
+                "field_tag":"h1"
+            },
+            {
+                "field_price":"Price",
+                "class_price_product":"text-primary",
+                "xpath_price_product":"/html/body/div[7]/div/div[2]/div[1]/div/h2/span",
+                "field_tag":"span"   
+            },{
+                "field_description":"Description",
+                "class_description_product":"container pt-sm-3 pb-sm-3",
+                "xpath_description_product":"/html/body/div[8]/div",
+                "field_tag":"div"
+            },{
+                "field_image":"Image",
+                "class_image_product":".product-gallery .product-carousel a", 
+                "xpath_image_product":"/html/body/div[7]/div/div[1]/div/div/div[1]/div/div/a",
+                "field_tag":"a"
+            },{
+                "class_state_product":"p-1 bg-success text-white",
+                "xpath_state_product":"/html/body/div[7]/div/div[2]/div[2]/div[1]/div[2]/div/ul/li[2]/span"
+            }
+        ],
+
+        "pagination":{
+            "number":"1",
+            "parameter":"?page=",
+            "xpath_links_page1":"/html/body/div[1]/main/div/div[2]/div[1]/div[2]/div/div[1]/div[3]/ul",
+            "xpath_links_page2":"/html/body/div[1]/main/div/div[2]/div[2]/ul",
+            "total":3
+        }
+    }
+]

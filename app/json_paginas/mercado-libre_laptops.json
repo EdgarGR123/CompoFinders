@@ -1,0 +1,58 @@
+[
+    {
+        "sitio": "mercado-libre",
+        "url":"https://listado.mercadolibre.com.sv/laptops-accesorios/",
+        "url_base":"https://listado.mercadolibre.com.sv/",
+        "name":"Mercado libre",
+        "type_scraper":null,
+        "info_page":{
+            "country":"El salvador",
+            "abbreviation":"SV",
+            "language":"Español"
+        },
+        "currency":{
+            "name":"Dolar estadounidense",
+            "symbol":"$",
+            "abbreviation":"USD"
+        },
+        "links_productos":".ui-search-link__title-card.ui-search-link",
+        
+        "fields":
+        [
+            {
+                "field_name":"Title",
+                "class_title_product":".ui-pdp-title",
+                "xpath_title_product":"/html/body/main/section[2]/div/div[1]/div[2]/div/div/h3/a",
+                "field_tag":"h1"
+            },
+            {
+                "field_price":"Price",
+                "class_price_product":"andes-money-amount ui-pdp-price__part andes-money-amount--cents-superscript andes-money-amount--compact",
+                "xpath_price_product":"/html/body/div[7]/div/div[2]/div[1]/div/h2/span",
+                "field_tag":"span"   
+            },{
+                "field_description":"Description",
+                "class_description_product":"ui-pdp-container__row ui-pdp-container__row--technical-specifications",
+                "xpath_description_product":"/html/body/div[8]/div",
+                "field_tag":"div"
+            },{
+                "field_image":"Image",
+                "class_image_product":"ui-pdp-image ui-pdp-gallery__figure__image", 
+                "xpath_image_product":"/html/body/div[7]/div/div[1]/div/div/div[1]/div/div/a",
+                "field_tag":"a"
+            },{
+                "field_state": "estado",
+                "class_state_product":"ui-pdp-buybox__quantity__available",
+                "xpath_state_product":"/html/body/div[7]/div/div[2]/div[2]/div[1]/div[2]/div/ul/li[2]/span"
+            }
+        ],
+
+        "pagination":{
+            "number":"1",
+            "parameter":"none",
+            "xpath_links_page1":"/html/body/div[1]/main/div/div[2]/div[1]/div[2]/div/div[1]/div[3]/ul",
+            "xpath_links_page2":"/html/body/div[1]/main/div/div[2]/div[2]/ul",
+            "total":0
+        }
+    }
+]
