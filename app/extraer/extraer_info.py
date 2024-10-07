@@ -1,11 +1,12 @@
 from bs4 import BeautifulSoup as bs
 import requests
-import os
+import json
 import re
-from ..enviar.datos_quemados import Base_dados
+from ..enviar.datos_quemados import Base_datos
+from .google_api import GuardarImg
 
 class Extraer_info_products():
-    def __init__(self, title, price, description, image, state_product, docs, sitio):
+    def __init__(self, title, price, description, image, state_product, docs, sitio, nombre_del_json, categoria):
         self.titulo= title 
         self.precio= price 
         self.descripcion= description 
@@ -13,15 +14,17 @@ class Extraer_info_products():
         self.estado_producto= state_product 
         self.documentos= docs
         self.sitio= sitio
+        self.nombre_componente= nombre_del_json
+        self.categoria = categoria
 
     def limpiar_text(self, texto):
         return ' '.join(texto.split())
     
     def iterar_links(self):
         for self.index, url in enumerate(self.documentos):
+            self.url_pagina= url
             self.response = requests.get(url, verify=False)
             if self.response.status_code == 200:
-
                 constent= self.response.text
                 self.soup = bs(constent, 'html.parser')
                 if self.sitio == 'aeon':
@@ -34,61 +37,61 @@ class Extraer_info_products():
                     isinstance = self.mercado_libre()
                 if self.sitio == 'intelmax':
                     isinstance = self.intelmax()
-
-
+    
     def Aeon(self):
         titulo = self.soup.select_one(self.titulo)
         precio = self.soup.find(class_=self.precio)
         descripcion = self.soup.find(class_=self.descripcion)
-        estado = self.soup.find(class_=self.estado_producto)
-        image = self.soup.find(class_=self.imagen)
-
+        estado_contenedor = self.soup.find(class_= self.estado_producto)
+        
+        imagenes = self.soup.find_all(class_='img img-fluid product_detail_img mh-100')
+        origen = self.sitio
+        imagen_urls = []
+    
         if titulo:
-            titulo=  self.limpiar_text( str(titulo.get_text().strip().replace("'", "")))
-            titulo_limpio = re.sub(r'[<>:"/\\|?*]', '', titulo) 
-            #print(f"Título encontrado en el documento {self.index}: {titulo}")
-        else :
-            titulo= "titulo no encontrado"
-            #print(f"No se encontró el título en el documento {self.index}")
-
-        if precio:
-            precio= str(precio.get_text().strip().replace("", ""))
-            #print(f"Precio encontrado en el documento {self.index}: {precio}")
-        else :
-            precio= "precio no encontrado"
-            #print(f"No se encontró el precio en el documento {self.index}")
-        if descripcion:
-            descripcion=  self.limpiar_text( str(descripcion.get_text().strip().replace("'", "")))
-            #print(f"Descripcion encontrado en el documento {self.index}: {descripcion}")
-        else :
-            descripcion= "No se encontró el Descripcion"
-            #print(f"No se encontró el Descripcion en el documento {self.index}")
-        if estado:
-            estado= str(estado.get_text().strip().replace("'", ""))
-            #print(f"Estado encontrado en el documento {self.index}: {estado}")
+            titulo = self.limpiar_text(str(titulo.get_text().strip().replace("'", "")))
+            titulo_limpio = re.sub(r'[<>:"/\\|?*]', '', titulo).replace(" ", "_").replace("-", "_").replace(".", "_").lower()
         else:
-            estado= "No se encontró el Estado"
-            #print(f"No se encontró el Estado en el documento {self.index}")
-            if image:
-                img_url = image.get('src')
-                if img_url:
-                    if not img_url.startswith('http'):
-                        img_url = 'https://aeon.com.sv' + img_url
-
-                        ruta_carpeta_imagenes = os.path.dirname(os.path.abspath(__file__),  'imagenes_descargadas')
-                        os.makedirs(ruta_carpeta_imagenes, exist_ok=True)
-
-                        nombre_imagen = f"{titulo_limpio}.jpg"
-                        ruta_imagen = os.path.join(ruta_carpeta_imagenes, nombre_imagen)
-
-                        image_data = requests.get(img_url, verify=False).content
-                        with open(ruta_imagen, 'wb') as img_file:
-                            img_file.write(image_data)
-                            print(f"Imagen guardada: {ruta_imagen}")
-                    else:
-                        print(f"Error al acceder a la URL {self.index}: {self.response.status_code}")
+            titulo = "titulo no encontrado"
+    
+        if precio:
+            precio = str(precio.get_text().strip().replace("", ""))
+        else:
+            precio = "precio no encontrado"
+    
+        if descripcion:
+            descripcion = self.limpiar_text(str(descripcion.get_text().strip().replace("'", "")))
+        else:
+            descripcion = "No se encontró la descripción"
+    
+        if estado_contenedor:
+            estado = estado_contenedor.find('div')  # Encontrar el div dentro del contenedor
+            if estado:
+                estado = str(estado.get_text().strip().replace("'", ""))  # Extraer el texto del estado
             else:
-                print(f"No se encontró imagen {self.index}")
+                estado = "No se encontró el estado"
+        else:
+            estado = "No se encontró el contenedor de estado"
+
+        for img in imagenes:
+            img_url = img.get('src')
+            if img_url and not img_url.startswith('http'):
+                img_url = 'https://aeon.com.sv' + img_url
+                
+            img_url = img_url.replace("%5B", "").replace("%5D", "")
+            img_url = img_url.split('?')[0] 
+            if img_url:
+                imagen_urls.append(img_url)
+
+        if imagen_urls:
+            img_guardar = GuardarImg(imagen_urls, titulo_limpio)
+            ruta_imagen_s = img_guardar.enviar_img()
+        else:
+            print(f"No se encontraron imágenes en {self.index}")
+        isinstance = Base_datos()
+        isinstance.datos_para_guardar(titulo, precio, descripcion, estado, ruta_imagen_s, origen, self.nombre_componente, self.url_pagina, self.categoria)
+    
+
 
     def kayfa(self):
         print("\n\n\nSITIO KAYFA")
@@ -96,51 +99,67 @@ class Extraer_info_products():
         precio = self.soup.find(class_=self.precio)
         descripcion = self.soup.find(class_=self.descripcion)
         estado = self.soup.find(class_=self.estado_producto)
-        image = self.soup.select_one(self.imagen) 
+        imagenes_contenedor = self.soup.find_all(class_='cloud-zoom-gallery')
+        imagen= self.soup.select_one('.magnifier')
+        origen = self.sitio
+        imagen_urls = []
+        ruta_imagen_s=None
 
         if titulo:
             titulo =  self.limpiar_text( str(titulo.get_text().strip().replace("'", "")))
-            #print(f"Título encontrado en el documento {self.index}: {titulo}")
+            titulo_limpio = re.sub(r'[<>:"/\\|?*]', '', titulo)
+            titulo_limpio = titulo_limpio.replace(" ", "_").replace("-", "_").replace(".", "_")
+            titulo_limpio = titulo_limpio.lower() 
         else :
             titulo= "titulo no encontrado"
-            #print(f"No se encontró el título en el documento {self.index}")
 
         if precio:
             precio= str(precio.get_text().strip().replace("", ""))
-            #print(f"Precio encontrado en el documento {self.index}: {precio}")
         else :
             precio= "precio no encontrado"
-            #print(f"No se encontró el precio en el documento {self.index}")
         if descripcion:
             descripcion=  self.limpiar_text( str(descripcion.get_text().strip().replace("'", "")))
-            #print(f"Descripcion encontrado en el documento {self.index}: {descripcion}")
         else :
             descripcion= "No se encontró el Descripcion"
-            #print(f"No se encontró el Descripcion en el documento {self.index}")
         if estado:
             estado= str(estado.get_text().strip().replace("'", ""))
-            #print(f"Estado encontrado en el documento {self.index}: {estado}")
         else:
             estado= "No se encontró el Estado"
-            #print(f"No se encontró el Estado en el documento {self.index}")
 
-        if image:
-            ruta_carpeta_imagenes = os.path.dirname(os.path.abspath(__file__), 'imagenes_descargadas')
-            os.makedirs(ruta_carpeta_imagenes, exist_ok=True) 
+        if imagenes_contenedor:
+            for contenedor in imagenes_contenedor:
+                imagenes = contenedor.find_all('img')
+                for img in imagenes:
+                    img_url = img.get('src')
+                    print("Carrusel_imagenes", img_url)
+                    if img_url:
+                        img_url = img_url.replace("%5B", "").replace("%5D", "").split('?')[0]
+                        imagen_urls.append(img_url)
+        else:
+            print(f"Error al acceder a las imagenes {self.index}: {self.response.status_code}")
 
-            img_url = image.get('src')
+        # Obtener la imagen única si existe
+        if imagen:
+            img_url = imagen.get('src')
+            print("imagen_unica", imagen.get('src'))
             if img_url:
-                nombre_imagen = os.path.basename(img_url)
-                ruta_imagen = os.path.join(ruta_carpeta_imagenes, nombre_imagen)
+                img_url = img_url.replace("%5B", "").replace("%5D", "").split('?')[0]
+                imagen_urls.append(img_url)
 
-                image_data = requests.get(img_url).content
-                with open(ruta_imagen, 'wb') as img_file:
-                    img_file.write(image_data)
-                    print(f"Imagen guardada: {ruta_imagen}")
-            else:
-                print(f"Error al acceder a la URL {self.index}: {self.response.status_code}")
-        else:   
-            print(f"No se encontro imagen {self.index}")
+        # Verificar si se encontraron imágenes
+        if imagen_urls:
+            img_guardar = GuardarImg(imagen_urls, titulo_limpio)
+            ruta_imagen_s = img_guardar.enviar_img()
+
+        # Guardar datos en la base de datos
+        isinstance = Base_datos()
+        isinstance.datos_para_guardar(titulo, precio, descripcion, estado, ruta_imagen_s, origen, self.nombre_componente, self.url_pagina, self.categoria)
+
+        if not imagen_urls:
+            print(f"No se encontraron imágenes en {self.index}")
+        if not ruta_imagen_s:
+            print(f"No se pudo guardar la imagen en {self.index}")
+
 
     def zona_digital(self):
         print("\n\n\nSITIO_ ZONA DIGITAL")
@@ -148,11 +167,15 @@ class Extraer_info_products():
         precio = self.soup.find(class_=self.precio)
         descripcion = self.soup.find(class_=self.descripcion)
         estado = self.soup.find(class_=self.estado_producto)
-        image = self.soup.select_one('.product-gallery .product-carousel a>img')
+        imagen = self.soup.select_one('.product-gallery .product-carousel a>img')
         origen = self.sitio
+        ruta_imagen = None
 
         if titulo:
             titulo =  self.limpiar_text( str(titulo.get_text().strip().replace("'", "")))
+            titulo_limpio = re.sub(r'[<>:"/\\|?*]', '', titulo)
+            titulo_limpio = titulo_limpio.replace(" ", "_").replace("-", "_").replace(".", "_")
+            titulo_limpio = titulo_limpio.lower()
             print(f"Título encontrado en el documento {self.index}: {titulo}")
         else :
             titulo = "titulo no encontrado"
@@ -176,29 +199,19 @@ class Extraer_info_products():
         else:
             estado = "No se encontró el Estado"
             print(f"No se encontró el Estado en el documento {self.index}")
-
-        if image:
-            ruta_carpeta_imagenes = os.path.dirname(os.path.abspath(__file__), 'imagenes_descargadas')
-            os.makedirs(ruta_carpeta_imagenes, exist_ok=True) 
-
-            img_url = image.get('src')
-            print(img_url)
-        if img_url:
-
-            nombre_imagen = self.limpiar_text(self.limpiar_text( str(titulo.strip().replace("'", ""))))
-      
-            if not os.path.splitext(nombre_imagen)[1]:
-                nombre_imagen += '.jpg'
-                ruta_imagen = os.path.join(ruta_carpeta_imagenes, nombre_imagen)
-
-                image_data = requests.get(img_url).content
-                with open(ruta_imagen, 'wb') as img_file:
-                    img_file.write(image_data)
-                print(f"Imagen guardada: {ruta_imagen}")
+        if imagen:
+            img_url = imagen.get('src')
+            print("\n\n\nimagen...", img_url)
+            
+            if img_url:
+                isinstance= GuardarImg(img_url, titulo_limpio)
+                ruta_imagen = isinstance.enviar_img()
+            else:
+                print(f"Error al acceder a la URL {self.index}: {self.response.status_code}")
         else:
-            print(f"Error al acceder a la URL")
-        isinstance = Base_dados() 
-        isinstance.datos_para_guardar(titulo, precio, descripcion, estado, ruta_imagen, origen)
+                print(f"No se encontró imagen {self.index}")
+        isinstance = Base_datos() 
+        isinstance.datos_para_guardar(titulo, precio, descripcion, estado, ruta_imagen, origen, self.nombre_componente, self.url_pagina)
 
     def mercado_libre(self):
         #code de aeon
@@ -207,11 +220,16 @@ class Extraer_info_products():
         precio = self.soup.find(class_=self.precio)
         descripcion = self.soup.find(class_=self.descripcion)
         estado = self.soup.find(class_=self.estado_producto)
-        image = self.soup.find(class_=self.imagen)
+        imagenes = self.soup.find_all(class_=self.imagen)
+        origen = self.sitio
+        ruta_imagen_s = None
+        imagen_urls=[]
 
         if titulo:
             titulo=  self.limpiar_text( str(titulo.get_text().strip().replace("'", "")))
-            titulo_limpio = re.sub(r'[<>:"/\\|?*]', '', titulo) 
+            titulo_limpio = re.sub(r'[<>:"/\\|?*]', '', titulo)
+            titulo_limpio = titulo_limpio.replace(" ", "_").replace("-", "_").replace(".", "_")
+            titulo_limpio = titulo_limpio.lower() 
         else :
             titulo= "titulo no encontrado"
         if precio:
@@ -226,37 +244,39 @@ class Extraer_info_products():
             estado= str(estado.get_text().strip().replace("'", ""))
         else:
             estado= "No se encontró el Estado"
-        if image:
-            img_url = image.get('src')
-            print("\n\n\nimagen...", img_url)
+        for img in imagenes:
+            img_url = img.get('src')
+                
+            img_url = img_url.replace("%5B", "").replace("%5D", "")
+            img_url = img_url.split('?')[0] 
             if img_url:
+                imagen_urls.append(img_url)
 
-                ruta_carpeta_imagenes = os.path.dirname(os.path.abspath(__file__), 'imagenes_descargadas')
-                os.makedirs(ruta_carpeta_imagenes, exist_ok=True)
-                nombre_imagen = f"{titulo_limpio}.jpg"
-                ruta_imagen = os.path.join(ruta_carpeta_imagenes, nombre_imagen)
-                image_data = requests.get(img_url, verify=False).content
-                with open(ruta_imagen, 'wb') as img_file:
-                    img_file.write(image_data)
-                    print(f"Imagen guardada: {ruta_imagen}")
-            else:
-                print(f"Error al acceder a la URL {self.index}: {self.response.status_code}")
+        if imagen_urls:
+            img_guardar = GuardarImg(imagen_urls, titulo_limpio)
+            ruta_imagen_s = img_guardar.enviar_img()
         else:
-                print(f"No se encontró imagen {self.index}")
+            print(f"No se encontraron imágenes en {self.index}")
+        isinstance = Base_datos()
+        isinstance.datos_para_guardar(titulo, precio, descripcion, estado, ruta_imagen_s, origen, self.nombre_componente, self.url_pagina, self.categoria)
+
 
     def intelmax(self):
-        #code de aeon
+        #code de intelMax
         print("\n\n\nSITIO INTELMAX")
         titulo = self.soup.select_one(self.titulo)
         precio = self.soup.find(class_=self.precio)
         descripcion = self.soup.find(class_=self.descripcion)
         estado = self.soup.find('a', {'title': 'Ver Disponibilidad'})
-
-        image = self.soup.select_one('.product__details-nav-thumb img')
+        origen = self.sitio
+        imagen = self.soup.select_one('.product__details-nav-thumb img')
+        ruta_imagen = None
 
         if titulo:
             titulo=  self.limpiar_text( str(titulo.get_text().strip().replace("'", "")))
-            titulo_limpio = re.sub(r'[<>:"/\\|?*]', '', titulo) 
+            titulo_limpio = re.sub(r'[<>:"/\\|?*]', '', titulo)
+            titulo_limpio = titulo_limpio.replace(" ", "_").replace("-", "_").replace(".", "_")
+            titulo_limpio = titulo_limpio.lower() 
         else :
             titulo= "titulo no encontrado"
         if precio:
@@ -288,23 +308,15 @@ class Extraer_info_products():
         else:
             estado = "No se encontró el Estado"
             print(f"No se encontró el Estado en el documento {self.index}")
-
-        if image:
-            img_url = image.get('src')
+        if imagen:
+            img_url = imagen.get('src')
+            print("\n\n\nimagen...", img_url)
             if img_url:
-
-                ruta_carpeta_imagenes = os.path.dirname(os.path.abspath(__file__), 'imagenes_descargadas')
-                os.makedirs(ruta_carpeta_imagenes, exist_ok=True)
-
-                nombre_imagen = f"{titulo_limpio}.jpg"
-
-                ruta_imagen = os.path.join(ruta_carpeta_imagenes, nombre_imagen)
-                image_data = requests.get(img_url, verify=False).content
-                with open(ruta_imagen, 'wb') as img_file:
-                    img_file.write(image_data)
-                    print(f"Imagen guardada: {ruta_imagen}")
+                isinstance= GuardarImg(img_url, titulo_limpio)
+                ruta_imagen = isinstance.enviar_img(nombre_imagen=titulo_limpio)
             else:
                 print(f"Error al acceder a la URL {self.index}: {self.response.status_code}")
         else:
                 print(f"No se encontró imagen {self.index}")
-
+        isinstance=Base_datos()
+        isinstance.datos_para_guardar(titulo, precio, descripcion,estado, ruta_imagen, origen, self.nombre_componente, self.url_pagina)

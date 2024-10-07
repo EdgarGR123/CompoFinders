@@ -1,7 +1,7 @@
 [
     {
         "sitio": "mercado-libre",
-        "url":"https://listado.mercadolibre.com.sv/componentes-pc-procesadores/",
+        "url":"https://listado.mercadolibre.com.sv/componentes-pc-memorias/",
         "url_base":"https://listado.mercadolibre.com.sv/",
         "name":"Mercado libre",
         "type_scraper":null,

@@ -40,6 +40,8 @@
     </style>
 </head>
 <body>
+
+        
     <div class="form-container">
         <h1>Scraper</h1>
         <form id="scraper-form" method="post">
@@ -50,35 +52,67 @@
                 <option value="kayfa">Kayfa</option>
                 <option value="zd">Zona Digital</option>
                 <option value="intelmax">Intelmax</option>
-                <option value="mercado-libre">Mercado libre</option>
+                <option value="mercado_libre">Mercado libre</option>
                 <option value="facebook">Facebook</option>
             </select>
-
+    
             <label for="componente-categoria">Categoría de Componente:</label>
             <select id="componente-categoria" name="componente-categoria" required>
-                <option value="" disabled selected>Selecciona una categoría</option>
-                <option value="cables_adaptadores">Cables Adaptadores</option>
-                <option value="teclados">Teclados</option>
-                <option value="memorias_usb">Memorias USB</option>
-                <option value="memorias_ram">Memorias Ram</option>
-                <option value="motherboard">Motherboard</option>
-                <option value="procesadores">Procesadores</option>
-                <option value="laptops">Laptops</option>
+                <option value="" disabled selected>Selecciona una componente</option>
             </select>
-            
+    
             <button type="submit">Comenzar</button>
         </form>
     </div>
 
+
 </body>
 </html>
 
+
 <script>
+    let categoriasPorTienda = {};
+
+    document.addEventListener("DOMContentLoaded", () => {
+        fetch('/templates/tiendas.json')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error al cargar el archivo JSON');
+                }
+                return response.json();
+            })
+            .then(data => {
+                categoriasPorTienda = data.categorias;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    });
+
+
+    document.getElementById('nombre-tienda').addEventListener('change', function() {
+    const tiendaSeleccionada = this.value;
+    const categoriaSelect = document.getElementById('componente-categoria');
+    categoriaSelect.innerHTML = '<option value="" disabled selected>Selecciona una componente</option>';
+
+    if (Array.isArray(categoriasPorTienda[tiendaSeleccionada])) {
+        categoriasPorTienda[tiendaSeleccionada].forEach(categoria => {
+            const option = document.createElement('option');
+            option.value = categoria.value;
+            option.textContent = categoria.text;
+            categoriaSelect.appendChild(option);
+        });
+    } else {
+        console.error(`Las categorías para ${tiendaSeleccionada} no son un array.`);
+    }
+});
+
     document.getElementById('scraper-form').addEventListener('submit', function(event) {
-        event.preventDefault(); 
-    
+        event.preventDefault();
+
         const formData = new FormData(this);
         const datos = Object.fromEntries(formData.entries());
+
         fetch('http://127.0.0.1:5000/scraper/', {
             method: 'POST',
             headers: {
@@ -86,6 +120,130 @@
             },
             body: JSON.stringify(datos)
         })
-    })
-
+        .then(response => response.json())
+        .then(data => {
+            console.log('Respuesta del servidor:', data);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    });
 </script>
+<!--
+Si la Tienda seleccionada es aeon los valores que se desplegaran en la categoria componentes seran:
+
+option 1: motherboard_intel
+option 2: motherboard_amd
+option 3: procesadores(incluye AMD y INTEL)
+option 4: memoria_ram_ddr4
+option 5: memoria_ram_ddr5
+option 6: memoria_ram_laptop_ddr4
+option 7: memoria_ram_laptop_ddr5
+option 8: tarjeta_video_amd
+option 6: tarjeta_video_intel
+option 9: memoria_usb
+option 10: memoria_usb_c
+option 11: teclados_normales
+opption 12: teclados_gaming
+option 13: teclados_inalambricos
+option 14: mouse_normales
+option 15: mouse_gaming
+option 16: mouse_inalambricos
+option 17: camaras_web
+option 18: laptop_normales
+option 19: audifonos
+option 20: audifonos_headset
+option 21: monitores
+option 22: pc_standard
+option 23: pc_pro
+option 24: pc_gamer
+option 25: adaptador
+option 26: cables
+option 27: microfonos
+option 28: fuentes_poder
+
+Si la kayfa seleccionada es aeon los valores que se desplegaran en la categoria componentes seran:
+
+option 1: motherboard_amd(todo)
+option 2: motherboard_intel(todo)
+option 3: procesadores_amd(todo)
+option 4: procesadores_intel(todo)
+option 5: memoria_ram_ddr4
+option 6: memoria_ram_ddr5
+option 7: tarjeta_video_amd(todas)
+option 8: tarjetas_video_intel(todas)
+option 9: memoria_usb
+option 10: teclados
+option 11: mouse
+option 12: camaras_web
+option 13: laptops
+option 14: headset
+option 15: monitores
+option 16: monitores_2k
+option 17: cables_adaptadores
+option 18: fuentes_sin_verificacion
+option 19: fuente_poder_80
+option 20: fuente_poder_80_bronce
+option 21: fuentes_poder_80_platimun
+option 22: fuente_poder_80_gold
+option 29: microfonos
+
+Si la zona_digital seleccionada es aeon los valores que se desplegaran en la categoria componentes seran:
+
+option 1: motherboard_amd(todo)
+option 2: motherboard_intel(todo)
+option 3: procesadores_amd(todo)
+option 4: procesadores_intel(todo)
+option 5: memoria_ram_laptop
+option 6: memoria_ram_pc
+option 7: tarjeta_video(todas)
+option 8: memoria_usb
+option 9: teclados_normales
+option 10: teclados_gaming
+option 11: mouse_gaming
+option 12: mouse_usb_opticos
+option 13: mouse_usb_inalambricos
+option 14: camaras_web
+option 15: laptops_normales
+option 16: laptops_gaming
+option 17: audifonos
+option 18: headset_gaming
+option 19: monitores
+option 20: pc_gamer
+option 21: adaptador
+option 22: cables
+option 23: microfonos
+option 24: fuente_poder
+
+Si la intelmax seleccionada es aeon los valores que se desplegaran en la categoria componentes seran:
+
+option 1: motherboard(todo)
+option 2: procesadores(todo)
+option 3: memoria_ram(todo)
+option 4: tarjetas_video(todo)
+option 5: memoria_usb
+option 6: mouse_normales
+option 7: mouse_gaming
+option 8: camaras_web
+option 9: teclados_normales
+option 10: teclados_gaming
+option 11: audifonos
+option 12: audifonos_gaming
+option 13: laptops_normales
+option 14: pc
+option 15: monitores
+option 16: adaptador
+option 17: cables
+option 18: microfonos
+option 19: fuente_poder
+
+
+Si la mercado_libre seleccionada es aeon los valores que se desplegaran en la categoria componentes seran:
+
+option 1: laptops
+option 2: laptops2
+option 3: memoria_ram
+option 4: pc
+option 5: procesadores
+option 6: monitores
+option 7: tarjetas_video

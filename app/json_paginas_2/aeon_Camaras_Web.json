@@ -1,0 +1,62 @@
+[
+    {   "sitio":"aeon",
+        "url":"https://www.aeon.com.sv/shop/category/camaras-camaras-web-351",
+        "url_base":"https://aeon.com.sv/",
+        "name":"Aeon",
+        "categoria":"perifericos",
+        "grupo":"camaras_web",
+        "type_scraper":null,
+        "info_page":{
+            "country":"El salvador",
+            "abbreviation":"SV",
+            "language":"Español"
+        },
+        "currency":{
+            "name":"Dolar estadounidense",
+            "symbol":"$",
+            "abbreviation":"USD"
+        },
+        "links_productos":".as-product .pro-img .asp-img",
+        
+        "fields":
+        [
+            {
+                "field_name":"Title",
+                "class_title_product":"#product_details h1",
+                "xpath_title_product":"/html/body/div[1]/main/div/section[1]/div[2]/div[2]/h1",
+                "field_tag":""
+            },
+            {
+                "field_price":"Price",
+                "class_price_product":"oe_price_h4 css_editable_mode_hidden",
+                "xpath_price_product":"/html/body/div[1]/main/div/section[1]/div[2]/div[2]/form/div/div[1]/h4[1]",
+                "field_tag":"h4"   
+            },{
+                "field_description":"Description",
+                "class_description_product":"text-muted mt-3",
+                "xpath_description_product":"/html/body/div[1]/main/div/section[1]/div[2]/div[2]/form/div/div[2]",
+                "field_tag":"div"
+            },{
+                "field_image":"Image",
+                "class_image_product":"zoomLens",
+                "xpath_image_product":"/html/body/div[4]/div[1]",
+                "field_tag":"div"
+            },{
+                "field_images_carrusel":"Imagenes_carrusel",
+                "class_images_carrusel":"img o_image_64_contain"
+            },{
+                "class_state_product":"availability_message_10261 text-danger mt16",
+                "xpath_state_product":"/html/body/div[1]/main/div/section[1]/div[2]/div[2]/form/div/div[4]/div"
+            }
+        ],
+
+        "pagination":{
+            "number":"1",
+            "parameter" :"/page/",
+            "xpath_links_page1":"/html/body/div[1]/main/div/div[2]/div[1]/div[2]/div/div[1]/div[3]/ul",
+            "xpath_links_page2":"/html/body/div[1]/main/div/div[2]/div[2]/ul",
+            "total":0
+        }
+    }
+]
+

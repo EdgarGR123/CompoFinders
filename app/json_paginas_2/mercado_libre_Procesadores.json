@@ -1,9 +1,11 @@
 [
     {
-        "sitio": "mercado-libre",
+        "sitio": "mercado_libre",
         "url":"https://listado.mercadolibre.com.sv/componentes-pc-procesadores/",
         "url_base":"https://listado.mercadolibre.com.sv/",
         "name":"Mercado libre",
+        "categoria":"componentes_internos",
+        "grupo":"procesadores",
         "type_scraper":null,
         "info_page":{
             "country":"El salvador",

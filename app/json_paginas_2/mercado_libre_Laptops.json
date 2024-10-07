@@ -1,9 +1,11 @@
 [
     {
-        "sitio": "mercado-libre",
-        "url":"https://listado.mercadolibre.com.sv/componentes-pc-procesadores/",
+        "sitio": "mercado_libre",
+        "url":"https://listado.mercadolibre.com.sv/laptops-accesorios-notebooks/",
         "url_base":"https://listado.mercadolibre.com.sv/",
         "name":"Mercado libre",
+        "categoria":"equipos_informaticos",
+        "grupo":"laptops",
         "type_scraper":null,
         "info_page":{
             "country":"El salvador",
@@ -37,7 +39,7 @@
                 "field_tag":"div"
             },{
                 "field_image":"Image",
-                "class_image_product":"ui-pdp-image ui-pdp-gallery__figure__image", 
+                "class_image_product":"ui-pdp-image ui-pdp-gallery__figure__image",
                 "xpath_image_product":"/html/body/div[7]/div/div[1]/div/div/div[1]/div/div/a",
                 "field_tag":"a"
             },{

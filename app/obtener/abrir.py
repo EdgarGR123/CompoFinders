@@ -10,9 +10,10 @@ def Abrir_json():
         json_a_vaciar= json.load(datos)
         nombre_tienda= json_a_vaciar.get('nombre-tienda')
         nombre_del_json= json_a_vaciar.get('componente-categoria')
+        print(nombre_tienda, nombre_del_json)
 
     ruta_mapear= os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    json_ruta= os.path.join(ruta_mapear, 'json_paginas', f"{nombre_tienda}_{nombre_del_json}.json")
+    json_ruta= os.path.join(ruta_mapear, 'json_paginas_2', f"{nombre_tienda}_{nombre_del_json}.json")
 
     with open(json_ruta, "r") as archivo:
         script = json.load(archivo)
@@ -20,6 +21,7 @@ def Abrir_json():
         for scr in script:
             sitio= scr.get('sitio')
             url = scr.get('url')
+            categoria= scr.get('categoria')
             total_paginas= scr.get('pagination').get('total')
             selector_links = scr.get('links_productos')
             title = scr.get('fields')[0].get('class_title_product')
@@ -30,9 +32,9 @@ def Abrir_json():
             parametro= scr.get('pagination').get('parameter')
 
             ## este codigo te ayuda a ponder escrapear todas las paginas que contienen esos productos 
-            for driver in  obtener_elementos.Abrir_sitio(url, total_paginas, parametro, sitio):
+            for driver in  obtener_elementos.Abrir_sitio(url, total_paginas, parametro, sitio): 
                 if driver:
                     links = obtener_elementos.Extraer_links_productos(driver, selector_links, sitio)
                     if links:
-                        extractor = Extraer_info_products(title, price, description, image, state_product, links, sitio)
+                        extractor = Extraer_info_products(title, price, description, image, state_product, links, sitio, nombre_del_json, categoria)
                         extractor.iterar_links()

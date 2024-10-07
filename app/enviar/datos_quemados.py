@@ -1,12 +1,12 @@
 import mysql.connector
 from mysql.connector import errorcode
 
-class Base_dados():
+class Base_datos():
     def __init__(self):
-        self.usuario = 'root'
-        self.contraseña = ''
-        self.host = 'localhost'
-        self.database = 'prueba'
+        self.usuario = 'sql3734824'
+        self.contraseña = 'tLSNDkBWa8'
+        self.host = 'sql3.freesqldatabase.com'
+        self.database = 'sql3734824'
 
     def establecer_conexion(self):
         configuracion = {'user': self.usuario,'password': self.contraseña,'host': self.host,'database': self.database}
@@ -28,11 +28,11 @@ class Base_dados():
             self.conexion.close()
             print("Conexión cerrada")
 
-    def datos_para_guardar(self, titulo, precio, descripcion, estado, imagen, origen):
+    def datos_para_guardar(self, titulo, precio, descripcion, estado, ruta_imagen,   origen, nombre_componente, url_producto, categoria):
         self.establecer_conexion()
         try:
-            query = """ insert into productos (titulo, precio, descripcion, estado, imagen, origen) values (%s, %s, %s, %s, %s, %s)"""
-            datos = (titulo, precio, descripcion, estado, imagen, origen)
+            query = """ insert into productos (titulo, precio, descripcion, estado, ruta_imagen,   origen, nombre_componente , categoria, url_producto, fecha_hora) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, NOW())"""
+            datos = (titulo, precio, descripcion, estado, str(ruta_imagen),  origen, nombre_componente, categoria, url_producto)
             self.cursor.execute(query, datos)
             self.conexion.commit()
             print("Datos insertados correctamente")

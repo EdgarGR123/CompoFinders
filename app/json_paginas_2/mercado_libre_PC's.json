@@ -1,9 +1,11 @@
 [
     {
-        "sitio": "mercado-libre",
-        "url":"https://listado.mercadolibre.com.sv/componentes-pc-procesadores/",
+        "sitio": "mercado_libre",
+        "url": "https://listado.mercadolibre.com.sv/pc-escritorio/",
         "url_base":"https://listado.mercadolibre.com.sv/",
         "name":"Mercado libre",
+        "categoria":"equipos_informaticos",
+        "grupo":"pc",
         "type_scraper":null,
         "info_page":{
             "country":"El salvador",

@@ -1,9 +1,11 @@
 [
     {
-        "sitio": "mercado-libre",
-        "url":"https://listado.mercadolibre.com.sv/componentes-pc-procesadores/",
+        "sitio": "mercado_libre",
+        "url": "https://listado.mercadolibre.com.sv/laptops-accesorios-otros/",
         "url_base":"https://listado.mercadolibre.com.sv/",
         "name":"Mercado libre",
+        "categoria":"equipos_informaticos",
+        "grupo":"laptops",
         "type_scraper":null,
         "info_page":{
             "country":"El salvador",
