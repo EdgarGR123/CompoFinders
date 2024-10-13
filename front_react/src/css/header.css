@@ -1,0 +1,127 @@
+.modal_padre{
+    display: flex;
+    background-color:  rgba(26, 26, 27, 0.267);
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    justify-content: center;
+}
+
+.input_div{
+    background-color: rgb(27, 27, 25);
+    top: 70px;
+    height: min-content;
+    padding: 5px;
+    border-radius: 8px;
+    width: 90%; 
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+
+#input_busqueda{
+    width: 100%;
+    margin-left: 2px;
+    height: 39px;
+    background-color: transparent;
+    color: white;
+    border-color: transparent;
+    outline: none;    
+}
+#input_busqueda::placeholder{
+    color:  #b9fff9 ;
+}
+#input_busqueda::-webkit-search-cancel-button{margin-left: 20px;}
+
+.boton_cerrar{
+    position: fixed;
+    width: min-content;
+    height: min-content;
+    top: 40px;
+    font-weight: bold;
+    color: rgb(185, 255, 249);
+    right: 10px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+
+.div_icon_microfono{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    background-color: rgba(32, 32, 30, 0.301);
+}
+
+.fa-microphone{
+    width: 100%;
+    padding: 5px  20px;
+    color: #b9fff9;
+}
+
+.resultado_busqueda{
+    position: fixed;
+    top: 125px;
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    min-height: 400px;
+    max-height: 500px;
+    padding: 10px;
+    background-color: rgb(27, 27, 25);
+    border-radius: 8px;
+    overflow-y: auto;
+
+}
+/* Estilos de las cartas */
+.cartas {
+    background-color: rgb(0, 0, 0);
+    width: 100%;
+    height: min-content;
+    display: flex;
+    align-items: center; /* Alinea la imagen y el contenido verticalmente */
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+}
+
+/* Imagen del producto */
+.image-div {
+    width: 20%;
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+}
+
+.image-div img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+/* Contenido del producto */
+.contenido_producto {
+    width: 70%; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 20px;
+    background-color: transparent;
+    color: white;
+}
+
+.ver_detalle{
+    padding: 3px;
+    width: min-content;
+    color: #b9fff9;
+    background-color: transparent;
+    border: transparent;
+    outline: transparent;
+    height: min-content;
+}

@@ -1,0 +1,61 @@
+/*
+Custom Css
+*/
+
+h1 .text-success.text-center{
+    background-color: transparent;
+    
+}
+
+.span{color: aliceblue;}
+#slick-slide00{
+    width: 232px;
+}
+/*ESTILOS DE LA NAVEGACION DE EL MAPA LOCALIZACION*/
+
+#map {
+    height: 600px;
+    width: 100%;
+    border: 2px solid #00796b;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+.controls {
+    margin-bottom: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.controls select, .controls button, .controls a {
+    padding: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+@media (max-width: 768px) {
+    .controls select, .controls button, .controls a {
+        width: 100%;
+        margin-right: 0;
+}
+}
+select, button {
+    padding: 10px;
+    margin-right: 10px;
+}
+#wazeLink {
+    display: none;
+    margin-top: 10px;
+    padding: 10px 15px;
+    background-color: #ff6f20;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+#wazeLink:hover {
+    background-color: #e65c00; /* Color m���s oscuro al pasar el rat���n */
+}
+
+
